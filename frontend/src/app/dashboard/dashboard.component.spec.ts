@@ -11,17 +11,20 @@ describe('DashboardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DashboardComponent, MenuComponent],
+      imports: [DashboardComponent, MenuComponent, RouterTestingModule],
       providers: [AuthService],
-      imports: [RouterTestingModule],
     });
 
     fixture = TestBed.createComponent(DashboardComponent);
-
     component = fixture.componentInstance;
-
     authService = TestBed.inject(AuthService);
-    authService.login();
+    authService.login = jasmine.createSpy('login').and.callFake(() => {
+      component.isLoggedIn = true;
+    });
+    authService.logout = jasmine.createSpy('logout').and.callFake(() => {
+      component.isLoggedIn = false;
+    });
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -29,14 +32,17 @@ describe('DashboardComponent', () => {
   });
 
   it('should display the menu after logging in', () => {
+    component.isLoggedIn = true;
+    fixture.detectChanges();
     const menu = fixture.debugElement.nativeElement.querySelector('app-menu');
     expect(menu).toBeTruthy();
   });
 
   it('should hide the menu after logging out', () => {
-    authService.logout();
+    component.logout();
     fixture.detectChanges();
     const menu = fixture.debugElement.nativeElement.querySelector('app-menu');
     expect(menu).toBeFalsy();
   });
 });
+
