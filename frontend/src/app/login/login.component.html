@@ -10,6 +10,7 @@
             <input type="password" id="password" name="password" [(ngModel)]="formData.password" required>
         </div>
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
         <button type="submit" [disabled]="form.invalid">Zaloguj</button>
     </form>
 </div>

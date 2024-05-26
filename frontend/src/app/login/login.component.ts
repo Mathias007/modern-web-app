@@ -19,19 +19,22 @@ export class LoginComponent {
   };
 
   errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    this.authService.login();
-    this.router.navigate(['/dashboard']);
-    // if (
-    //   this.formData.username === 'exampleUser' 
-    //   && this.formData.password === 'examplePassword'
-    //   ) {
-    //     this.errorMessage = 'Login successfull!';
-    // } else {
-    //   this.errorMessage = 'Invalid username or password';
-    // }
+    if (
+      this.formData.username === 'exampleUser' 
+      && this.formData.password === 'examplePassword'
+    ) {
+      this.errorMessage = '';
+      this.successMessage = 'Login successful!';
+      this.authService.login();
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.successMessage = '';
+      this.errorMessage = 'Invalid username or password';
+    }
   }
 }
